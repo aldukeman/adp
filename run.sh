@@ -21,6 +21,7 @@
 
 TIMEOUT=30m
 OUT=""
+PLANNER=adp
 
 function plan {
     echo "run.sh: running $1 on domain $2 and problem $3 ..."
@@ -61,38 +62,20 @@ function plan {
     OUT="$OUT$1 $2 $3: $STATS $STATSVAL $COST $MAKESPAN\n"
 }
 
-if [ "$#" -eq 3 ]; then
-    plan $1 $2 $3
-
-    echo "run sh: results (elapsed time, maximal memory, planner exit code, VAL exit code, plan cost, plan makespan):"
-    echo -e $OUT
-
-    exit 0
-fi
-
 if [ "$#" -eq 2 ]; then
-    for problem in benchmarks/factored/$2/*/
-    do
-        problem=`basename $problem`
-        plan $1 $2 $problem
-    done
+    plan $PLANNER $1 $2
 
     echo "run sh: results (elapsed time, maximal memory, planner exit code, VAL exit code, plan cost, plan makespan):"
     echo -e $OUT
 
     exit 0
 fi
-
 
 if [ "$#" -eq 1 ]; then
-    for domain in benchmarks/factored/*/
+    for problem in benchmarks/factored/$1/*/
     do
-        domain=`basename $domain`
-        for problem in benchmarks/factored/$domain/*/
-        do
-            problem=`basename $problem`
-            plan $1 $domain $problem
-        done
+        problem=`basename $problem`
+        plan $PLANNER $1 $problem
     done
 
     echo "run sh: results (elapsed time, maximal memory, planner exit code, VAL exit code, plan cost, plan makespan):"
