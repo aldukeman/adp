@@ -1,0 +1,12 @@
+*.o
+*.pyc
+lex.yy.cc
+output
+output.sas
+sas_plan
+adp/out
+stats.out
+
+validate
+preprocess
+downward-release
