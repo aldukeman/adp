@@ -4,6 +4,7 @@ lex.yy.cc
 output
 output.sas
 sas_plan
+*.partial_order
 adp/out
 stats.out
 

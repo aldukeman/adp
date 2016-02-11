@@ -68,15 +68,22 @@ void save_plan(const vector<const GlobalOperator *> &plan,
     } else {
         assert(plan_number == 1);
     }
-    ofstream outfile(filename.str());
+    string file_name = filename.str();
+    ofstream val_outfile(file_name);
+    ofstream cost_outfile(file_name + ".partial_order");
     for (size_t i = 0; i < plan.size(); ++i) {
         cout << plan[i]->get_name() << " (" << plan[i]->get_cost() << ")" << endl;
-        outfile << "(" << plan[i]->get_name() << ")" << endl;
+        val_outfile << "(" << plan[i]->get_name() << ")" << endl;
+        cost_outfile << "(" << plan[i]->get_name() << ") [" << plan[i]->get_cost() << "]" << endl;
     }
     int plan_cost = calculate_plan_cost(plan);
-    outfile << "; cost = " << plan_cost << " ("
+    val_outfile << "; cost = " << plan_cost << " ("
             << (is_unit_cost() ? "unit cost" : "general cost") << ")" << endl;
-    outfile.close();
+    val_outfile.close();
+
+    cost_outfile << "; cost = " << plan_cost << " ("
+            << (is_unit_cost() ? "unit cost" : "general cost") << ")" << endl;
+    cost_outfile.close();
     cout << "Plan length: " << plan.size() << " step(s)." << endl;
     cout << "Plan cost: " << plan_cost << endl;
     ++g_num_previously_generated_plans;
